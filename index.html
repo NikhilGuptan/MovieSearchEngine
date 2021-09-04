@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search Engine</title>
+    <style>
+
+        h1{
+            text-align: center;
+        }
+        input,button{
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            text-align: center;
+            
+        }
+        div{
+            width: 60%;
+            margin: auto;
+            margin-top: 50px;
+        }
+        div>button{
+            background-color: red;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+        div>button:hover{
+            cursor: pointer;
+        }
+        .image{
+            float: left;
+            margin-right: 20px;  
+        }
+        .detail{
+            font-size: 18px;
+        }
+        .animation{
+            width: 800px;
+            
+        }
+        
+
+
+    </style>
+</head>
+<body>
+    
+    <h1>Movie Search Engine</h1>
+    <div>
+    <input type="text" name="" id="movie" placeholder="Type movie name"><br>
+    <button onclick="findMovie()">Search Movie</button>
+    </div>
+
+    <div id="info">
+
+    </div>
+    
+
+</body>
+
+
+ <script>
+
+    async function findMovie(){
+
+
+        let movie = document.getElementById("movie").value;
+        let movieDetail = document.getElementById("info");
+        movieDetail.innerHTML = null;
+        
+        try {
+            let res = await fetch(`http://www.omdbapi.com/?apikey=59f389aa&t=${movie}`)
+            let data = await res.json();
+            console.log(data.Title);
+            
+            if(data.Title!=undefined){
+
+            let m_name = document.createElement("p");
+            m_name.innerHTML = `Title:${data.Title}`;
+            m_name.setAttribute("class", "detail")
+
+            let m_date = document.createElement("p");
+            m_date.innerHTML = `Released:${data.Released}`;
+            m_date.setAttribute("class", "detail")
+
+            let m_rate = document.createElement("p");
+            m_rate.innerHTML = `IMDB: ${data.imdbRating}`;
+            m_rate.setAttribute("class", "detail")
+            console.log(+(data.imdbRating));
+
+            let m_language = document.createElement("p");
+            m_language.innerHTML = `Lanhuage sported:${data.Language}`;
+            m_rate.setAttribute("class", "detail")
+
+            let runtime = document.createElement("p");
+            runtime.innerHTML = `Runing Time: ${data.Runtime}`;
+            m_rate.setAttribute("class", "detail")
+
+            let award = document.createElement("p");
+            award.innerHTML = `Awards: ${data.Awards}`;
+            m_rate.setAttribute("class", "detail")
+
+            let BoxOffice = document.createElement("p");
+            BoxOffice.innerHTML = `BoxOffice: ${data.BoxOffice}`;
+            m_rate.setAttribute("class", "detail")
+
+            let img = document.createElement("img");
+            img.src = data.Poster;
+            img.setAttribute("class","image")
+
+            movieDetail.append(img,m_name,m_date,m_rate,m_language,runtime,award, BoxOffice)
+            }else{
+               
+
+                let img = document.createElement("img");
+                img.src = "https://freefrontend.com/assets/img/html-funny-404-pages/CodePen-404-Page.gif";
+                img.setAttribute("class", "animation") 
+
+                movieDetail.append(img)
+            }
+
+        } catch (err) {
+            console.log("error of my choice:", err);
+        }
+
+        // try {
+        //     let result = await fetch(`http://img.omdbapi.com/?apikey=59f389aa&t=${movie}`)
+        //     let poster = await result.json();
+        //     console.log(poster);
+        // } catch (err) {
+        //     console.log("error of my choice:", err);
+        // }
+        
+
+    }
+
+
+ </script>
+</html>
